@@ -1,0 +1,30 @@
+<div>
+	<div class="input-group search-input">
+		<input type="text" class="form-control" placeholder="Search for..." ng-model="searchText">
+	</div>
+	<table class="table table-bordered table-hover companies-list">
+		<tr>
+			<th class="col-id">#</th>
+			<th class="col-company">Company</th>
+			<th class="col-edit">Edit</th>
+		</tr>
+		<tr ng-repeat="x in data | filter:searchText" name="{{x.id}}" ng-init="active=0">
+			<td name="id">
+				<input class="form-control input-sm" value="{{x.id}}" ng-show="active" readonly/>
+				<span ng-show="!active">{{ x.id }}</span>
+			</td>
+			<td name="company">
+				<input class="form-control input-sm" value="{{x.company}}" ng-show="active" />
+				<span ng-show="!active">{{ x.country }}</span>
+			</td>
+			<td>
+				<a href="" class="btn btn-primary btn-sm" ng-click="showEditRow(x)">
+					<span>Edit</span>
+				</a>
+				<a href="" class="btn btn-primary btn-danger btn-sm" ng-click="deleteRow(x)">
+					<span>Del</span>
+				</a>
+			</td>
+		</tr>
+	</table>
+</div>

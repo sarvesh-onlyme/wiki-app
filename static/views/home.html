@@ -1,0 +1,60 @@
+<div>
+	<div class="input-group search-input">
+		<input type="text" class="form-control" placeholder="Search for..." ng-model="searchText">
+	</div>
+	<table class="table table-bordered table-hover contributors-list">
+		<tr>
+			<th class="col-id">#</th>
+			<th class="col-name">Name</th>
+			<th class="col-username">UserName</th>
+			<th class="col-email">Email</th>
+			<th class="col-organization">Organization</th>
+			<th class="col-country">Country</th>
+			<th class="col-start_date">Start Date</th>
+			<th class="col-end_date">End Date</th>
+			<th class="col-edit">Edit</th>
+		</tr>
+		<tr ng-repeat="x in data | filter:searchText" name="{{x.id}}" ng-init="active=0">
+			<td name="id">
+				<input class="form-control input-sm" value="{{x.id}}" ng-show="active" readonly/>
+				<span ng-show="!active">{{ x.id }}</span>
+			</td>
+			<td name="name">
+				<input class="form-control input-sm" value="{{x.name}}" ng-show="active" />
+				<span ng-show="!active">{{ x.name }}</span>
+			</td>
+			<td name="username">
+				<input class="form-control input-sm" value="{{x.username}}" ng-show="active" />
+				<span ng-show="!active">{{ x.username }}</span>
+			</td>
+			<td name="email">
+				<input class="form-control input-sm" value="{{x.email}}" ng-show="active" />
+				<span ng-show="!active">{{ x.email }}</span>
+			</td>
+			<td name="organization">
+				<input class="form-control input-sm" value="{{x.organization}}" ng-show="active" />
+				<span ng-show="!active">{{ x.organization }}</span>
+			</td>
+			<td name="country">
+				<input class="form-control input-sm" value="{{x.country}}" ng-show="active" />
+				<span ng-show="!active">{{ x.country }}</span>
+			</td>
+			<td name="start_date">
+				<input class="form-control input-sm" value="{{x.start_date}}" ng-show="active" />
+				<span ng-show="!active">{{ x.start_date }}</span>
+			</td>
+			<td name="end_date">
+				<input class="form-control input-sm" value="{{x.end_date}}" ng-show="active" />
+				<span ng-show="!active">{{ x.end_date }}</span>
+			</td>
+			<td>
+				<a href="" class="btn btn-primary btn-sm" ng-click="showEditRow(x)">
+					<span>Edit</span>
+				</a>
+				<a href="" class="btn btn-primary btn-danger btn-sm" ng-click="deleteRow(x)">
+					<span>Del</span>
+				</a>
+			</td>
+		</tr>
+	</table>
+</div>

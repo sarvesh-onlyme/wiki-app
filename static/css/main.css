@@ -1,0 +1,62 @@
+/* index.html */
+
+body {
+	background-color: #EFEFEF;
+}
+
+.head {
+	background-color: #FFFFFF;
+}
+
+.active-sidebar > a {
+	color: #FFFFFF;
+	background-color: #428bca;
+}
+
+.views {
+	margin-left: auto;
+	margin-right: auto;
+	height: 80%;
+}
+
+
+
+/* Signin*/
+.form-signin {
+	max-width: 330px;
+	padding: 15px;
+	margin-top: 0;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/* Home.html */
+
+.contributors-list {
+	margin-left: 0%;
+	margin-right: auto;
+	width: 70%;
+	margin-top: 2%;
+}
+
+.search-input {
+	width: 40%;
+	margin-top: 0%;
+	margin-left: 1%;
+}
+
+/* Country.html */
+.countries-list {
+	margin-left: 0%;
+	margin-right: auto;
+	width: 70%;
+	margin-top: 2%;
+}
+
+/* Company.html */
+.companies-list {
+	margin-left: 0%;
+	margin-right: auto;
+	width: 70%;
+	margin-top: 2%;
+}

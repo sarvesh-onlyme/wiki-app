@@ -1,0 +1,39 @@
+<html>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jQuery-1.11.2.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/angular/angular.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/angular/angular-route.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/wikiApp.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/route.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/Crtl.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-3.3.4-dist/css/bootstrap.min.css') }}" />
+
+<body>
+<header class="nav nav-pills navbar-static-top head">
+	<div class="container">
+		<div class="navbar-header">
+			<a href="./" class="navbar-brand">WIKIMEDIA-TECH-MATRICS</a>
+		</div>
+		<nav class="collapse navbar-collapse bs-navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#/account">Account</a></li>
+				<li><a href="#/signin">Sign-in</a></li>
+			</ul>
+		</nav>
+	</div>
+</header>
+<div class="col-sm-3 col-md-2 sidebar">
+	<ul class="nav nav-sidebar">
+		<li class="active-sidebar"><a href="./">Home<span class="sr-only">(current)</span></a></li>
+		<li><a href="#/country">Country</a></li>
+		<li><a href="#/company">Company</a></li>
+	</ul>
+</div>
+<div class="col-sm-9">
+	<div ng-app = "wikiApp" ng-controller="wikiCtrl" class="views">
+		<div ng-view></div>
+	</div>
+</div>
+
+</body>
+</html>
