@@ -1,6 +1,8 @@
 from wiki_app import app
-from flask import render_template, send_from_directory, Response
+from flask import render_template, send_from_directory, Response, g
 import json
+from wiki_app.config import mysql
+from bson import json_util
 
 @app.route('/')
 @app.route('/index')
@@ -10,7 +12,16 @@ def index():
 
 @app.route('/contributor/all')
 def getContributorsList():
+
 	# Get Data
+	"""
+	cursor = mysql.connect().cursor()
+	query = "SELECT p.uuid as id, p.name as username, p.email as email, d.name as company, c.name as country, u.init as start_date, u.end as end_date FROM `profiles` as p, `countries` as c, `uidentities_domains` as u, `domains` as d  WHERE p.country_code = c.code and u.uuid=p.uuid and u.domain_id=d.id LIMIT 2"
+	cursor.execute(query)
+	data = cursor.fetchall()
+	data = json.dumps(data, default=json_util.default)
+	"""
+	#return data
 	contributorsList = [
 		{
 			"id": 1,
