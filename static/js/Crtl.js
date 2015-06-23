@@ -51,24 +51,10 @@ app.controller("homeCtrl", function($scope, $routeParams){
 
 app.controller("accountCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
-	
-	/* Get user's details from backend */
-	/*$http.get("http://localhost/templates/data/contributors.json").success(function (response) {
-		console.log(response);
-	});*/
-
-	user = {
-		"id": 1,
-		"name": "john",
-		"username": "john",
-		"email": "john@mediawiki.org",
-		"organization": "wikimedia",
-		"country": "Spain",
-		"start_date": "2014-1-1",
-		"end_date": "currently"
-	};
-	$scope.user = user;
-
+	if (userid) {
+		$scope.user = user;
+		$scope.userid = userid;
+	}
 	$scope.showEditRow = function(x) {
 		if(!this.active) {
 			$("table > td > input").removeClass("ng-hide");
@@ -169,6 +155,17 @@ app.controller("companyCtrl", function($scope, $routeParams){
 	}
 });
 
-app.controller("signinCtrl", function($scope, $routeParams){
+app.controller("signinCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
+	
+	$scope.submit = function() {
+		email = $("form input[id='inputEmail']").val();
+		password = $("form input[id='inputPassword']").val();
+		$http.post("signin", {'email':email, 'password':password}).success(function(response){
+			console.log(response);
+			user = response;
+			userid = user[0];
+			$scope.user = user;
+		});
+	}
 });

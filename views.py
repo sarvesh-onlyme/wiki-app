@@ -1,5 +1,5 @@
 from wiki_app import app
-from flask import render_template, send_from_directory, Response, g
+from flask import render_template, send_from_directory, Response, request, redirect
 import json
 from wiki_app.config import mysql
 from bson import json_util
@@ -10,51 +10,42 @@ def index():
 	user = {'nickname': 'dhu'}
 	return render_template('index.html', title='Home', user=user)
 
+@app.route('/signin', methods=['POST'])
+def signin():
+	if request.method == 'POST':
+		email = request.json['email']
+		password = request.json['password']
+
+		# Authenticate
+		cursor = mysql.connect().cursor()
+		query = "SELECT uuid FROM `account` WHERE email = '"+email+"' and password = '"+password+"'"
+		cursor.execute(query)
+		data = cursor.fetchone()
+		userid = data[0]
+		return redirect("/contributor/"+userid)
+
 @app.route('/contributor/all')
 def getContributorsList():
 
 	# Get Data
-	"""
 	cursor = mysql.connect().cursor()
-	query = "SELECT p.uuid as id, p.name as username, p.email as email, d.name as company, c.name as country, u.init as start_date, u.end as end_date FROM `profiles` as p, `countries` as c, `uidentities_domains` as u, `domains` as d  WHERE p.country_code = c.code and u.uuid=p.uuid and u.domain_id=d.id LIMIT 2"
+	query = "SELECT p.uuid as id, i.name as name, p.name as username, p.email as email, d.name as company, c.name as country, u.init as start_date, u.end as end_date FROM `profiles` as p, `countries` as c, `uidentities_domains` as u, `domains` as d, `identities` as i WHERE p.country_code = c.code and u.uuid=p.uuid and u.domain_id=d.id and i.uuid=p.uuid LIMIT 10"
 	cursor.execute(query)
 	data = cursor.fetchall()
-	data = json.dumps(data, default=json_util.default)
-	"""
+	contributorsList = json.dumps(data, default=json_util.default)
 	#return data
-	contributorsList = [
-		{
-			"id": 1,
-			"name": "John",
-			"username": "john",
-			"email": "john@wikimedia.com",
-			"organization": "wikimedia",
-			"country": "spain",
-			"start_date": "2014-1-1",
-			"end_date": "currently"
-		},
-		{
-			"id": 2,
-			"name": "John1",
-			"username": "john1",
-			"email": "john1@wikimedia.com",
-			"organization": "wikimedia",
-			"country": "spain",
-			"start_date": "2014-1-1",
-			"end_date": "currently"
-		},
-		{
-			"id": 3,
-			"name": "John3",
-			"username": "john3",
-			"email": "john3@wikimedia.com",
-			"organization": "wikimedia",
-			"country": "spain",
-			"start_date": "2014-1-1",
-			"end_date": "currently"
-		}
-	]
-	return Response(json.dumps(contributorsList),  mimetype='application/json')
+	return Response(contributorsList,  mimetype='application/json')
+
+@app.route('/contributor/<id>')
+def getContributorsInfo(id):
+	# Get Data
+	cursor = mysql.connect().cursor()
+	query = "SELECT p.uuid as id, i.name as name, p.name as username, p.email as email, d.name as company, c.name as country, u.init as start_date, u.end as end_date FROM `profiles` as p, `countries` as c, `uidentities_domains` as u, `domains` as d, `identities` as i WHERE p.country_code = c.code and u.uuid=p.uuid and u.domain_id=d.id and i.uuid=p.uuid and p.uuid='"+id+"'"
+	cursor.execute(query)
+	data = cursor.fetchone()
+	contributorsList = json.dumps(data, default=json_util.default)
+	#return data
+	return Response(contributorsList,  mimetype='application/json')
 
 @app.route('/country/all')
 def getCountriesList():
