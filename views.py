@@ -54,7 +54,8 @@ def setContritutorsInfo():
 		organization = request.json['organization']
 		country = request.json['country']
 
-		cursor = mysql.connect().cursor()
+		conn = mysql.connect()
+		cursor = conn.cursor()
 		query = "UPDATE `identities` SET `name`='"+name+"',`email`='"+email+"',`username`='"+username+"' WHERE uuid='"+id+"'" 
 		cursor.execute(query)
 
@@ -65,6 +66,7 @@ def setContritutorsInfo():
 		#Update Country
 		query2 = "UPDATE `profiles` SET `email`='"+email+"',`country_code`=(SELECT `code` FROM `countries` WHERE `name`='"+country+"') WHERE `uuid`='"+id+"'"
 		cursor.execute(query2)
+		conn.commit()
 		return "data"
 
 @app.route('/country/all')
