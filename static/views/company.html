@@ -8,14 +8,14 @@
 			<th class="col-company">Company</th>
 			<th class="col-edit">Edit</th>
 		</tr>
-		<tr ng-repeat="x in data | filter:searchText" name="{{x.id}}" ng-init="active=0">
+		<tr ng-repeat="x in data | filter:searchText" name="{{x[0]}}" ng-init="active=0">
 			<td name="id">
-				<input class="form-control input-sm" value="{{x.id}}" ng-show="active" readonly/>
-				<span ng-show="!active">{{ x.id }}</span>
+				<input class="form-control input-sm" value="{{x[0]}}" ng-show="active" readonly/>
+				<span ng-show="!active">{{ x[0] }}</span>
 			</td>
 			<td name="company">
-				<input class="form-control input-sm" value="{{x.company}}" ng-show="active" />
-				<span ng-show="!active">{{ x.country }}</span>
+				<input class="form-control input-sm" value="{{x[1]}}" ng-show="active" />
+				<span ng-show="!active">{{ x[1] }}</span>
 			</td>
 			<td>
 				<a href="" class="btn btn-primary btn-sm" ng-click="showEditRow(x)">

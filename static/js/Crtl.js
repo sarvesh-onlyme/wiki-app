@@ -90,14 +90,14 @@ app.controller("accountCtrl", function($scope, $routeParams, $http){
 
 });
 
-app.controller("countryCtrl", function($scope, $routeParams){
+app.controller("countryCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
 	$scope.data = countriesList;
 	$(".nav.nav-sidebar li").removeClass("active-sidebar");
 	$('.nav.nav-sidebar a[href="#/country"]')[0].parentElement.className = "active-sidebar";
 
 	$scope.showEditRow = function(x) {
-		var id = this.x.id;
+		var id = this.x[0];
 		if(!this.active) {
 			$("[name="+id+"] > td > input").removeClass("ng-hide");
 			$("[name="+id+"] > td > span").addClass("ng-hide");
@@ -111,30 +111,38 @@ app.controller("countryCtrl", function($scope, $routeParams){
 			/* Save edited data*/
 			var newData = {"id" : id};
 			var value = $("[name="+id+"] [name=country] input").val();
+			$("[name="+id+"] [name=country] span").text(value);
 			newData["country"] = value; 	
 			
 			/* Send newData to backend */
 			console.log(newData);
+			$http.post("country/set", newData).success(function(response){
+				console.log(response);
+			});
 		}
 		this.active = !this.active;
 	};
 
 	$scope.deleteRow = function(x) {
-		var id = this.x.id;
+		var id = this.x[0];
 		
 		/* Send id to backend */
 		console.log(id);
+		newData = {"id" : id};
+		$http.post("company/del", newData).success(function(response){
+			console.log(response);
+		});
 	}
 });
 
-app.controller("companyCtrl", function($scope, $routeParams){
+app.controller("companyCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
 	$scope.data = companiesList;
 	$(".nav.nav-sidebar li").removeClass("active-sidebar");
 	$('.nav.nav-sidebar a[href="#/company"]')[0].parentElement.className = "active-sidebar";
 
 	$scope.showEditRow = function(x) {
-		var id = this.x.id;
+		var id = this.x[0];
 		if(!this.active) {
 			$("[name="+id+"] > td > input").removeClass("ng-hide");
 			$("[name="+id+"] > td > span").addClass("ng-hide");
@@ -148,19 +156,27 @@ app.controller("companyCtrl", function($scope, $routeParams){
 			/* Save edited data*/
 			var newData = {"id" : id};
 			var value = $("[name="+id+"] [name=company] input").val();
+			$("[name="+id+"] [name=company] span").text(value);
 			newData["company"] = value; 	
 			
 			/* Send newData to backend */
 			console.log(newData);
+			$http.post("company/set", newData).success(function(response){
+				console.log(response);
+			});
 		}
 		this.active = !this.active;
 	};
 
 	$scope.deleteRow = function(x) {
-		var id = this.x.id;
+		var id = this.x[0];
 		
 		/* Send id to backend */
 		console.log(id);
+		newData = {"id": id};
+		$http.post("company/del", newData).success(function(response){
+			console.log(response);
+		});
 	}
 });
 

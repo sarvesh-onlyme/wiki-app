@@ -67,42 +67,74 @@ def setContritutorsInfo():
 		query2 = "UPDATE `profiles` SET `email`='"+email+"',`country_code`=(SELECT `code` FROM `countries` WHERE `name`='"+country+"') WHERE `uuid`='"+id+"'"
 		cursor.execute(query2)
 		conn.commit()
-		return "data"
+		return "done"
 
 @app.route('/country/all')
 def getCountriesList():
 	# Get Data
-	countriesList = [
-		{
-			"id": 1,
-			"country": "spain"
-		},
-		{
-			"id": 2,
-			"country": "florida"
-		},
-		{
-			"id": 3,
-			"country": "india"
-		}
-	]
-	return Response(json.dumps(countriesList),  mimetype='application/json')
+	cursor = mysql.connect().cursor()
+	query = "SELECT code, name FROM `countries` WHERE 1"
+	cursor.execute(query)
+	data = cursor.fetchall()
+	countriesList = json.dumps(data, default=json_util.default)
+	return Response(countriesList,  mimetype='application/json')
+
+@app.route('/country/set', methods=['POST'])
+def setCountryInfo():
+	if request.method == 'POST':
+		id =  request.json['id']
+		name = request.json['country']
+
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		query = "UPDATE `countries` SET `name`='"+name+"' WHERE `code`='"+id+"'"
+		cursor.execute(query)
+		conn.commit()
+		return "setCountryInfo"
+
+@app.route('/country/del', methods=['POST'])
+def delCountryInfo():
+	if request.method == 'POST':
+		id =  request.json['id']
+
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		query = "DELETE FROM `countries` WHERE `code`='"+id+"'"
+		cursor.execute(query)
+		conn.commit()
+		return "delCountryInfo"
 
 @app.route('/company/all')
 def getCompaniesList():
 	# Get Data
-	companiesList = [
-		{
-			"id": 1,
-			"country": "wikimedia"
-		},
-		{
-			"id": 2,
-			"country": "firefox"
-		},
-		{
-			"id": 3,
-			"country": "google"
-		}
-	]
-	return Response(json.dumps(companiesList),  mimetype='application/json')
+	cursor = mysql.connect().cursor()
+	query = "SELECT id, name FROM `domains` WHERE 1"
+	cursor.execute(query)
+	data = cursor.fetchall()
+	companiesList = json.dumps(data, default=json_util.default)
+	return Response(companiesList,  mimetype='application/json')
+
+@app.route('/company/set', methods=['POST'])
+def setCompanyInfo():
+	if request.method == 'POST':
+		id =  request.json['id']
+		name = request.json['company']
+
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		query = "UPDATE `domains` SET `name`='"+name+"' WHERE `id`='"+str(id)+"'"
+		cursor.execute(query)
+		conn.commit()
+		return "setCompanyInfo"
+
+@app.route('/company/del', methods=['POST'])
+def delCompanyInfo():
+	if request.method == 'POST':
+		id =  request.json['id']
+
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		query = "DELETE FROM `domains` WHERE `id`='"+id+"'"
+		cursor.execute(query)
+		conn.commit()
+		return "delCompanyInfo"
