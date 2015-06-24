@@ -2,6 +2,22 @@
 	<div class="input-group search-input">
 		<input type="text" class="form-control" placeholder="Search for..." ng-model="searchText">
 	</div>
+
+	<div class="addCountry col-xs-10">
+		<div class="col-md-2">
+			<input type="text" id="code" class="form-control input-group" placeholder="Code" />
+		</div>
+		<div class="col-md-6">
+			<input type="text" id="country" class="form-control input-group" placeholder="Country..." />
+		</div>
+		<div class="col-md-3">
+			<input type="text" id="alpha3" class="form-control input-group" placeholder="Alpha3" />
+		</div>
+		<div>
+			<a href="" class="btn btn-primary btn-sm" ng-click="addRow()">ADD</a>
+		</div>
+	</div>
+
 	<table class="table table-bordered table-hover countries-list">
 		<tr>
 			<th class="col-id">Code</th>

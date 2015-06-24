@@ -2,6 +2,14 @@
 	<div class="input-group search-input">
 		<input type="text" class="form-control" placeholder="Search for..." ng-model="searchText">
 	</div>
+	<div class="addCompany col-xs-7">
+		<div class="col-md-8">
+			<input type="text" class="form-control input-group" placeholder="Add companies..." />
+		</div>
+		<div>
+			<a href="" class="btn btn-primary btn-sm" ng-click="addRow()">ADD</a>
+		</div>
+	</div>
 	<table class="table table-bordered table-hover companies-list">
 		<tr>
 			<th class="col-id">#</th>

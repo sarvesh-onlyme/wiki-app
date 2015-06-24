@@ -129,10 +129,21 @@ app.controller("countryCtrl", function($scope, $routeParams, $http){
 		/* Send id to backend */
 		console.log(id);
 		newData = {"id" : id};
-		$http.post("company/del", newData).success(function(response){
+		$http.post("country/del", newData).success(function(response){
 			console.log(response);
 		});
 	}
+
+	$scope.addRow = function() {
+		var code = $(".addCountry div input[id='code']").val();
+		var country = $(".addCountry div input[id='country']").val();
+		var alpha3 = $(".addCountry div input[id='alpha3']").val();
+		newData = {"code": code, "country": country, "alpha3": alpha3};
+		console.log(newData);
+		$http.post("country/add", newData).success(function(response){
+			console.log(response);
+		});
+	};
 });
 
 app.controller("companyCtrl", function($scope, $routeParams, $http){
@@ -178,6 +189,14 @@ app.controller("companyCtrl", function($scope, $routeParams, $http){
 			console.log(response);
 		});
 	}
+
+	$scope.addRow = function() {
+		var company = $(".addCompany div input").val();
+		newData = {"company": company}
+		$http.post("company/add", newData).success(function(response){
+			console.log(response);
+		});
+	};
 });
 
 app.controller("signinCtrl", function($scope, $routeParams, $http){

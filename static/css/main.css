@@ -53,10 +53,20 @@ body {
 	margin-top: 2%;
 }
 
+.addCountry {
+	margin-top: 1%;
+	margin-bottom: 1%;
+}>
+
 /* Company.html */
 .companies-list {
 	margin-left: 0%;
 	margin-right: auto;
 	width: 70%;
 	margin-top: 2%;
+}
+
+.addCompany {
+	margin-top: 1%;
+	margin-bottom: 1%;
 }

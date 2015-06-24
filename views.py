@@ -69,6 +69,7 @@ def setContritutorsInfo():
 		conn.commit()
 		return "done"
 
+# Country
 @app.route('/country/all')
 def getCountriesList():
 	# Get Data
@@ -92,6 +93,20 @@ def setCountryInfo():
 		conn.commit()
 		return "setCountryInfo"
 
+@app.route('/country/add', methods=['POST'])
+def addCountryInfo():
+	if request.method == 'POST':
+		code = request.json['code']
+		country = request.json['country']
+		alpha3 = request.json['alpha3']
+
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		query = "INSERT INTO `countries`(`code`, `name`, `alpha3`) VALUES ('"+code+"', '"+country+"', '"+alpha3+"')"
+		cursor.execute(query)
+		conn.commit()
+		return "addCountryInfo"
+
 @app.route('/country/del', methods=['POST'])
 def delCountryInfo():
 	if request.method == 'POST':
@@ -104,6 +119,7 @@ def delCountryInfo():
 		conn.commit()
 		return "delCountryInfo"
 
+# Comapany
 @app.route('/company/all')
 def getCompaniesList():
 	# Get Data
@@ -127,6 +143,18 @@ def setCompanyInfo():
 		conn.commit()
 		return "setCompanyInfo"
 
+@app.route('/company/add', methods=['POST'])
+def addCompanyInfo():
+	if request.method == 'POST':
+		company = request.json['company']
+
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		query = "INSERT INTO `domains`(`name`) VALUES ('"+company+"')"
+		cursor.execute(query)
+		conn.commit()
+		return "addCompanyInfo"
+
 @app.route('/company/del', methods=['POST'])
 def delCompanyInfo():
 	if request.method == 'POST':
@@ -134,7 +162,7 @@ def delCompanyInfo():
 
 		conn = mysql.connect()
 		cursor = conn.cursor()
-		query = "DELETE FROM `domains` WHERE `id`='"+id+"'"
+		query = "DELETE FROM `domains` WHERE `id`='"+str(id)+"'"
 		cursor.execute(query)
 		conn.commit()
 		return "delCompanyInfo"
