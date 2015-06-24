@@ -10,14 +10,15 @@ app.controller("wikiCtrl", function($scope, $http){
 	});
 });
 
-app.controller("homeCtrl", function($scope, $routeParams){
+app.controller("homeCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
 	$scope.data = contributorsList;
 	$(".nav.nav-sidebar li").removeClass("active-sidebar");
 	$('.nav.nav-sidebar a[href="./"]')[0].parentElement.className = "active-sidebar";
 
 	$scope.showEditRow = function(x) {
-		var id = this.x.id;
+		var id = this.x[0];
+		console.log(this.x);
 		if(!this.active) {
 			$("[name="+id+"] > td > input").removeClass("ng-hide");
 			$("[name="+id+"] > td > span").addClass("ng-hide");
@@ -32,11 +33,15 @@ app.controller("homeCtrl", function($scope, $routeParams){
 			var newData = {};
 			for (var i = 0; i < attributes.length; i++) {
 				var value = $("[name="+id+"] [name="+attributes[i]+"] input").val();
+				$("[name="+id+"] [name="+attributes[i]+"] span").text(value);
 				newData[attributes[i]] = value; 	
 			};
 
 			/* Send newData to backend */
 			console.log(newData);
+			$http.post("contributor/set", newData).success(function(response){
+				console.log(response);
+			});
 		}
 		this.active = !this.active;
 	};
@@ -53,7 +58,7 @@ app.controller("accountCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
 	if (userid) {
 		$scope.user = user;
-		$scope.userid = userid;
+		$scope.userShow = 1;
 	}
 	$scope.showEditRow = function(x) {
 		if(!this.active) {
@@ -70,11 +75,15 @@ app.controller("accountCtrl", function($scope, $routeParams, $http){
 			var newData = {};
 			for (var i = 0; i < attributes.length; i++) {
 				var value = $("[name="+attributes[i]+"] input").val();
-				newData[attributes[i]] = value; 	
+				$("[name="+attributes[i]+"] span").text(value);
+				newData[attributes[i]] = value;
 			};
 
 			/* Send newData to backend */
 			console.log(newData);
+			$http.post("contributor/set", newData).success(function(response){
+				console.log(response);
+			});
 		}
 		this.active = !this.active;
 	};

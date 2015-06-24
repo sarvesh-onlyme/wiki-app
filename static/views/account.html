@@ -1,7 +1,7 @@
-<div class="container" ng-hide="{{userid}}">
+<div class="container" ng-hide="{{userShow}}">
 	<a href="#/signin">Sign-in</a>
 </div>
-<div class="container" ng-show="{{userid}}">
+<div class="container" ng-show="{{userShow}}">
 	<div class="col-md-1"></div>
 	<div class="col-md-6">
 		<table class="table table-hover account-info" ng-init="active=0">
@@ -17,7 +17,7 @@
 				<th>Name</th>
 				<td>
 					<span ng-show="!active">{{ user[1] }}</span>
-					<input class="form-control input-sm" value="{{user[1]}}" ng-show="active"/>
+					<input class="form-control input-sm" value="{{user[1]}}" ng-show="active" />
 				</td>
 			</tr>
 			<tr name="username">
@@ -35,7 +35,7 @@
 				</td>
 			</tr>
 			<tr name="organization">
-				<th>Organizarion</th>
+				<th>Organization</th>
 				<td>
 					<span ng-show="!active">{{ user[4] }}</span>
 					<input class="form-control input-sm" value="{{user[4]}}" ng-show="active" />

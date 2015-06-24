@@ -26,14 +26,12 @@ def signin():
 
 @app.route('/contributor/all')
 def getContributorsList():
-
 	# Get Data
 	cursor = mysql.connect().cursor()
 	query = "SELECT p.uuid as id, i.name as name, p.name as username, p.email as email, d.name as company, c.name as country, u.init as start_date, u.end as end_date FROM `profiles` as p, `countries` as c, `uidentities_domains` as u, `domains` as d, `identities` as i WHERE p.country_code = c.code and u.uuid=p.uuid and u.domain_id=d.id and i.uuid=p.uuid LIMIT 10"
 	cursor.execute(query)
 	data = cursor.fetchall()
 	contributorsList = json.dumps(data, default=json_util.default)
-	#return data
 	return Response(contributorsList,  mimetype='application/json')
 
 @app.route('/contributor/<id>')
@@ -44,8 +42,30 @@ def getContributorsInfo(id):
 	cursor.execute(query)
 	data = cursor.fetchone()
 	contributorsList = json.dumps(data, default=json_util.default)
-	#return data
 	return Response(contributorsList,  mimetype='application/json')
+
+@app.route('/contributor/set', methods=['POST'])
+def setContritutorsInfo():
+	if request.method == 'POST':
+		id =  request.json['id']
+		name = request.json['name']
+		username = request.json['username']
+		email = request.json['email']
+		organization = request.json['organization']
+		country = request.json['country']
+
+		cursor = mysql.connect().cursor()
+		query = "UPDATE `identities` SET `name`='"+name+"',`email`='"+email+"',`username`='"+username+"' WHERE uuid='"+id+"'" 
+		cursor.execute(query)
+
+		#Update Company
+		query1 = "UPDATE `uidentities_domains` SET `domain_id` = (SELECT `id` FROM `domains` WHERE `name` = '"+organization+"') WHERE `uuid` = '"+id+"'"
+		cursor.execute(query1)
+		
+		#Update Country
+		query2 = "UPDATE `profiles` SET `email`='"+email+"',`country_code`=(SELECT `code` FROM `countries` WHERE `name`='"+country+"') WHERE `uuid`='"+id+"'"
+		cursor.execute(query2)
+		return "data"
 
 @app.route('/country/all')
 def getCountriesList():
