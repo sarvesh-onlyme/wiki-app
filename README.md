@@ -29,3 +29,27 @@ $ wiki$ ./run.py
 ```
 
 - Now open localhost:5000 in your browser
+
+## What's include
+
+
+```
+wiki/
+├── flask/
+│   ├── ....
+├── wiki_app/
+│   ├── __init.py__
+│   ├── config.py
+│   ├── views.py
+│   ├── static
+│   │   ├── css/
+│   │   ├── js/
+│   │   ├── views/
+│   │   └── bootstrap...
+│   ├── templates
+│   │   └── index.html
+│   └── tmp
+│       ├── requirement.txt
+│       └── sortinghat.mysql
+└── run.py
+```
