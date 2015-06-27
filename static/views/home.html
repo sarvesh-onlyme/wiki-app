@@ -4,7 +4,7 @@
 	</div>
 	<table class="table table-bordered table-hover contributors-list">
 		<tr>
-			<th class="col-id">#</th>
+			<th class="col-id" ng-hide="1">#</th>
 			<th class="col-name">Name</th>
 			<th class="col-username">UserName</th>
 			<th class="col-email">Email</th>
@@ -15,7 +15,7 @@
 			<th class="col-edit">Edit</th>
 		</tr>
 		<tr ng-repeat="x in data | filter:searchText" name="{{x[0]}}" ng-init="active=0">
-			<td name="id">
+			<td name="id" ng-hide="1">
 				<input class="form-control input-sm" value="{{x[0]}}" ng-show="active" readonly/>
 				<span ng-show="!active">{{ x[0] }}</span>
 			</td>
@@ -32,11 +32,15 @@
 				<span ng-show="!active">{{ x[3] }}</span>
 			</td>
 			<td name="organization">
-				<input class="form-control input-sm" value="{{x[4]}}" ng-show="active" />
+				<select ng-show="active">
+					<option  ng-repeat="o in organization" value="{{o[1]}}">{{o[1]}}</option>
+				</select>
 				<span ng-show="!active">{{ x[4] }}</span>
 			</td>
 			<td name="country">
-				<input class="form-control input-sm" value="{{x[5]}}" ng-show="active" />
+				<select ng-show="active">
+					<option  ng-repeat="c in country" value="{{c[1]}}">{{c[1]}}</option>
+				</select>
 				<span ng-show="!active">{{ x[5] }}</span>
 			</td>
 			<td name="start_date">

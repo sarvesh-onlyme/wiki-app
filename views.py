@@ -21,30 +21,49 @@ def signin():
 		# Authenticate
 		cursor = mysql.connect().cursor()
 		query = "SELECT uuid FROM `account` WHERE email = '"+email+"' and password = '"+password+"'"
-		cursor.execute(query)
-		data = cursor.fetchone()
-		userid = data[0]
-		return redirect("/contributor/"+userid)
+		try:
+			cursor.execute(query)
+			data = cursor.fetchone()
+			userid = data[0]
+			return redirect("/contributor/"+userid)
+		except MySQLdb.Error, e:
+			try:
+				return "MySQL Error [%d]: %s" % (e.args[0], e.args[1])
+			except IndexError:
+				return "MySQL Error: %s" % str(e)
+	
 
 @app.route('/contributor/all')
 def getContributorsList():
 	# Get Data
 	cursor = mysql.connect().cursor()
-	query = "SELECT p.uuid as id, i.name as name, p.name as username, p.email as email, d.name as company, c.name as country, u.init as start_date, u.end as end_date FROM `profiles` as p, `countries` as c, `uidentities_domains` as u, `domains` as d, `identities` as i WHERE p.country_code = c.code and u.uuid=p.uuid and u.domain_id=d.id and i.uuid=p.uuid LIMIT 100"
-	cursor.execute(query)
-	data = cursor.fetchall()
-	contributorsList = jsonDumps(data) #json.dumps(data, default=json_util.default)
-	return Response(contributorsList,  mimetype='application/json')
+	query = "SELECT p.uuid as id, i.name as name, p.name as username, p.email as email, d.name as company, c.name as country, u.init as start_date, u.end as end_date FROM `profiles` as p, `countries` as c, `uidentities_domains` as u, `domains` as d, `identities` as i WHERE p.country_code = c.code and u.uuid=p.uuid and u.domain_id=d.id and i.uuid=p.uuid ORDER BY p.uuid LIMIT 100"
+	try:
+		cursor.execute(query)
+		data = cursor.fetchall()
+		contributorsList = jsonDumps(data) #json.dumps(data, default=json_util.default)
+		return Response(contributorsList,  mimetype='application/json')
+	except MySQLdb.Error, e:
+		try:
+			return "MySQL Error [%d]: %s" % (e.args[0], e.args[1])
+		except IndexError:
+			return "MySQL Error: %s" % str(e)
 
 @app.route('/contributor/<id>')
 def getContributorsInfo(id):
 	# Get Data
 	cursor = mysql.connect().cursor()
 	query = "SELECT p.uuid as id, i.name as name, p.name as username, p.email as email, d.name as company, c.name as country, u.init as start_date, u.end as end_date FROM `profiles` as p, `countries` as c, `uidentities_domains` as u, `domains` as d, `identities` as i WHERE p.country_code = c.code and u.uuid=p.uuid and u.domain_id=d.id and i.uuid=p.uuid and p.uuid='"+id+"'"
-	cursor.execute(query)
-	data = cursor.fetchone()
-	contributorsList = json.dumps(data, default=json_util.default)
-	return Response(contributorsList,  mimetype='application/json')
+	try:
+		cursor.execute(query)
+		data = cursor.fetchone()
+		contributorsList = json.dumps(data, default=json_util.default)
+		return Response(contributorsList,  mimetype='application/json')
+	except MySQLdb.Error, e:
+		try:
+			return "MySQL Error [%d]: %s" % (e.args[0], e.args[1])
+		except IndexError:
+			return "MySQL Error: %s" % str(e)
 
 @app.route('/contributor/set', methods=['POST'])
 def setContritutorsInfo():
@@ -58,18 +77,24 @@ def setContritutorsInfo():
 
 		conn = mysql.connect()
 		cursor = conn.cursor()
-		query = "UPDATE `identities` SET `name`='"+name+"',`email`='"+email+"',`username`='"+username+"' WHERE uuid='"+id+"'" 
-		cursor.execute(query)
+		try:
+			query = "UPDATE `identities` SET `name`='"+name+"',`email`='"+email+"',`username`='"+username+"' WHERE uuid='"+id+"'" 
+			cursor.execute(query)
 
-		#Update Company
-		query1 = "UPDATE `uidentities_domains` SET `domain_id` = (SELECT `id` FROM `domains` WHERE `name` = '"+organization+"') WHERE `uuid` = '"+id+"'"
-		cursor.execute(query1)
+			#Update Company
+			query1 = "UPDATE `uidentities_domains` SET `domain_id` = (SELECT `id` FROM `domains` WHERE `name` = '"+organization+"') WHERE `uuid` = '"+id+"'"
+			cursor.execute(query1)
 		
-		#Update Country
-		query2 = "UPDATE `profiles` SET `email`='"+email+"',`country_code`=(SELECT `code` FROM `countries` WHERE `name`='"+country+"') WHERE `uuid`='"+id+"'"
-		cursor.execute(query2)
-		conn.commit()
-		return "done"
+			#Update Country
+			query2 = "UPDATE `profiles` SET `email`='"+email+"',`country_code`=(SELECT `code` FROM `countries` WHERE `name`='"+country+"') WHERE `uuid`='"+id+"'"
+			cursor.execute(query2)
+			conn.commit()
+			return "done"
+		except MySQLdb.Error, e:
+			try:
+				return "MySQL Error [%d]: %s" % (e.args[0], e.args[1])
+			except IndexError:
+				return "MySQL Error: %s" % str(e)
 
 # Country
 @app.route('/country/all')

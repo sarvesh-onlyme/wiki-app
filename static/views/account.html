@@ -38,14 +38,19 @@
 				<th>Organization</th>
 				<td>
 					<span ng-show="!active">{{ user[4] }}</span>
-					<input class="form-control input-sm" value="{{user[4]}}" ng-show="active" />
+					<select ng-show="active">
+						<option  ng-repeat="o in organization" value="{{o[1]}}">{{o[1]}}</option>
+					</select>
+					<!--input class="form-control input-sm" value="{{user[4]}}" ng-show="active" /-->
 				</td>
 			</tr>
 			<tr name="country">
 				<th>Country</th>
 				<td>
 					<span ng-show="!active">{{ user[5] }}</span>
-					<input class="form-control input-sm" value="{{user[5]}}" ng-show="active" />
+					<select ng-show="active">
+						<option  ng-repeat="c in country" value="{{c[1]}}">{{c[1]}}</option>
+					</select>
 				</td>
 			</tr>
 			<tr name="start_date">

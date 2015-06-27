@@ -13,6 +13,8 @@ app.controller("wikiCtrl", function($scope, $http){
 app.controller("homeCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
 	$scope.data = contributorsList;
+	$scope.organization = companiesList;
+	$scope.country = countriesList;
 	$(".nav.nav-sidebar li").removeClass("active-sidebar");
 	$('.nav.nav-sidebar a[href="./"]')[0].parentElement.className = "active-sidebar";
 
@@ -32,7 +34,15 @@ app.controller("homeCtrl", function($scope, $routeParams, $http){
 			/* Save edited data*/
 			var newData = {};
 			for (var i = 0; i < attributes.length; i++) {
-				var value = $("[name="+id+"] [name="+attributes[i]+"] input").val();
+				if (attributes[i] == "organization") {
+					var value = $("[name="+id+"] [name="+attributes[i]+"] select").val();
+				}
+				else if (attributes[i] == "country") {
+					var value = $("[name="+id+"] [name="+attributes[i]+"] select").val();
+				}
+				else {
+					var value = $("[name="+id+"] [name="+attributes[i]+"] input").val();
+				}
 				$("[name="+id+"] [name="+attributes[i]+"] span").text(value);
 				newData[attributes[i]] = value; 	
 			};
@@ -56,6 +66,8 @@ app.controller("homeCtrl", function($scope, $routeParams, $http){
 
 app.controller("accountCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
+	$scope.organization = companiesList;
+	$scope.country = countriesList;
 	if (userid) {
 		$scope.user = user;
 		$scope.userShow = 1;
@@ -74,7 +86,15 @@ app.controller("accountCtrl", function($scope, $routeParams, $http){
 			/* Save edited data*/
 			var newData = {};
 			for (var i = 0; i < attributes.length; i++) {
-				var value = $("[name="+attributes[i]+"] input").val();
+				if (attributes[i] == "organization") {
+					var value = $("[name="+id+"] [name="+attributes[i]+"] select").val();
+				}
+				else if (attributes[i] == "country") {
+					var value = $("[name="+id+"] [name="+attributes[i]+"] select").val();
+				}
+				else {
+					var value = $("[name="+attributes[i]+"] input").val();
+				}
 				$("[name="+attributes[i]+"] span").text(value);
 				newData[attributes[i]] = value;
 			};
