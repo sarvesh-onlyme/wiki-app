@@ -5,6 +5,7 @@ from wiki_app.config import mysql
 from bson import json_util
 from flask.json import JSONEncoder
 from functions import Default, jsonDumps
+import MySQLdb
 
 @app.route('/')
 @app.route('/index')
@@ -89,7 +90,30 @@ def setContritutorsInfo():
 			query2 = "UPDATE `profiles` SET `email`='"+email+"',`country_code`=(SELECT `code` FROM `countries` WHERE `name`='"+country+"') WHERE `uuid`='"+id+"'"
 			cursor.execute(query2)
 			conn.commit()
-			return "done"
+			return "setContributorsInfo"
+		except MySQLdb.Error, e:
+			try:
+				return "MySQL Error [%d]: %s" % (e.args[0], e.args[1])
+			except IndexError:
+				return "MySQL Error: %s" % str(e)
+
+@app.route('/contributor/del', methods=['POST'])
+def delContributorsInfo():
+	if request.method == 'POST':
+		id = request.json['id']
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		try:
+			query = "DELETE FROM `profiles` WHERE `uuid`='"+id+"'"
+			cursor.execute(query)
+			query = "DELETE FROM `uidentities` WHERE `uuid`='"+id+"'"
+			cursor.execute(query)
+			query = "DELETE FROM `uidentities_domains` WHERE `uuid`='"+id+"'"
+			cursor.execute(query)
+			query = "DELETE FROM `identities` WHERE `uuid`='"+id+"'"
+			cursor.execute(query)
+			conn.commit()
+			return "delContributorsInfo"
 		except MySQLdb.Error, e:
 			try:
 				return "MySQL Error [%d]: %s" % (e.args[0], e.args[1])

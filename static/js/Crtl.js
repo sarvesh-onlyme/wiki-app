@@ -57,10 +57,19 @@ app.controller("homeCtrl", function($scope, $routeParams, $http){
 	};
 
 	$scope.deleteRow = function(x) {
-		var id = this.x.id;
+		var id = this.x[0];
 		
 		/* Send id to backend */
 		console.log(id);
+		$http.post("contributor/del", {"id": id}).success(function(response){
+			if (response=="delContributorsInfo") {
+				$("[name="+id+"]").html("");
+			}
+			else{
+				//error notification
+			}
+			console.log(response);
+		});
 	};
 });
 
@@ -150,7 +159,12 @@ app.controller("countryCtrl", function($scope, $routeParams, $http){
 		console.log(id);
 		newData = {"id" : id};
 		$http.post("country/del", newData).success(function(response){
-			console.log(response);
+			if (response=="delCountryInfo"){
+				$("[name="+id+"]").html("");
+			}
+			else {
+				// error notification
+			}
 		});
 	}
 
@@ -206,7 +220,12 @@ app.controller("companyCtrl", function($scope, $routeParams, $http){
 		console.log(id);
 		newData = {"id": id};
 		$http.post("company/del", newData).success(function(response){
-			console.log(response);
+			if (response=="delCompanyInfo") {
+				$("[name="+id+"]").html("");
+			}
+			else {
+				//error notification
+			}
 		});
 	}
 
