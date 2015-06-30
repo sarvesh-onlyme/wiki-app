@@ -7,6 +7,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/Crtl.js') }}"></script>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-3.3.4-dist/css/bootstrap.min.css') }}" />
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap-3.3.4-dist/js/bootstrap.min.js') }}"></script>
 
 <body>
 <header class="nav nav-pills navbar-static-top head">
@@ -33,6 +34,21 @@
 	<div ng-app = "wikiApp" ng-controller="wikiCtrl" class="views">
 		<div ng-view></div>
 	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+    </div>
+  </div>
 </div>
 
 </body>

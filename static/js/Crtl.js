@@ -50,7 +50,12 @@ app.controller("homeCtrl", function($scope, $routeParams, $http){
 			/* Send newData to backend */
 			console.log(newData);
 			$http.post("contributor/set", newData).success(function(response){
-				console.log(response);
+				if (response=="setContributorsInfo"){
+					notification("Successfull", "Information of the user has been changed");
+				}
+				else {
+					notification("Fail!", response);
+				}
 			});
 		}
 		this.active = !this.active;
@@ -62,11 +67,12 @@ app.controller("homeCtrl", function($scope, $routeParams, $http){
 		/* Send id to backend */
 		console.log(id);
 		$http.post("contributor/del", {"id": id}).success(function(response){
-			if (response=="delContributorsInfo") {
+			if (response=="delContributorsInfo"){
 				$("[name="+id+"]").html("");
+				notification("Successfull", "Information of the user has been deleted");
 			}
-			else{
-				//error notification
+			else {
+				notification("Fail!", response);
 			}
 			console.log(response);
 		});
@@ -111,6 +117,12 @@ app.controller("accountCtrl", function($scope, $routeParams, $http){
 			/* Send newData to backend */
 			console.log(newData);
 			$http.post("contributor/set", newData).success(function(response){
+				if (response=="setContributorsInfo"){
+					notification("Successfull", "Your information has been changed");
+				}
+				else {
+					notification("Fail!", response);
+				}
 				console.log(response);
 			});
 		}
@@ -146,7 +158,12 @@ app.controller("countryCtrl", function($scope, $routeParams, $http){
 			/* Send newData to backend */
 			console.log(newData);
 			$http.post("country/set", newData).success(function(response){
-				console.log(response);
+				if (response=="setCountryInfo"){
+					notification("Successfull", "Information of the country has been changed");
+				}
+				else {
+					notification("Fail!", response);
+				}
 			});
 		}
 		this.active = !this.active;
@@ -161,9 +178,10 @@ app.controller("countryCtrl", function($scope, $routeParams, $http){
 		$http.post("country/del", newData).success(function(response){
 			if (response=="delCountryInfo"){
 				$("[name="+id+"]").html("");
+				notification("Successfull", "Country has been deleted");
 			}
 			else {
-				// error notification
+				notification("Fail!", response);
 			}
 		});
 	}
@@ -175,6 +193,12 @@ app.controller("countryCtrl", function($scope, $routeParams, $http){
 		newData = {"code": code, "country": country, "alpha3": alpha3};
 		console.log(newData);
 		$http.post("country/add", newData).success(function(response){
+			if (response=="addCountryInfo"){
+				notification("Successfull", "Country information has been added");
+			}
+			else {
+				notification("Fail!", response);
+			}
 			console.log(response);
 		});
 	};
@@ -207,7 +231,12 @@ app.controller("companyCtrl", function($scope, $routeParams, $http){
 			/* Send newData to backend */
 			console.log(newData);
 			$http.post("company/set", newData).success(function(response){
-				console.log(response);
+				if (response=="setCompanyInfo"){
+					notification("Successfull", "Information of the organization has been changed");
+				}
+				else {
+					notification("Fail!", response);
+				}
 			});
 		}
 		this.active = !this.active;
@@ -222,9 +251,10 @@ app.controller("companyCtrl", function($scope, $routeParams, $http){
 		$http.post("company/del", newData).success(function(response){
 			if (response=="delCompanyInfo") {
 				$("[name="+id+"]").html("");
+				notification("Successfull", "Information of the organization has been deleted");
 			}
 			else {
-				//error notification
+				notification("Fail!", response);
 			}
 		});
 	}
@@ -233,6 +263,12 @@ app.controller("companyCtrl", function($scope, $routeParams, $http){
 		var company = $(".addCompany div input").val();
 		newData = {"company": company}
 		$http.post("company/add", newData).success(function(response){
+			if (response=="addCompanyInfo"){
+				notification("Successfull", "Information of the company has been added");
+			}
+			else {
+				notification("Fail!", response);
+			}
 			console.log(response);
 		});
 	};
