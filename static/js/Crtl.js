@@ -10,7 +10,7 @@ app.controller("wikiCtrl", function($scope, $http){
 	});
 });
 
-app.controller("homeCtrl", function($scope, $routeParams, $http){
+app.controller("homeCtrl", function($scope, $routeParams, $http, $filter){
 	$scope.param = $routeParams.param;
 	$scope.data = contributorsList;
 	$scope.organization = companiesList;
@@ -77,6 +77,56 @@ app.controller("homeCtrl", function($scope, $routeParams, $http){
 			console.log(response);
 		});
 	};
+
+ 	/* Pagination code */
+    // Slice data to pages
+    pagedItems = [];
+    var show_per_page = 4;
+    var number_of_items = contributorsList.length;
+    var number_of_pages = Math.ceil(number_of_items/show_per_page);
+	for (var i = 0; i < number_of_pages; i++) {
+    	pagedItems[i] = contributorsList.slice(i*show_per_page, (i+1)*show_per_page);
+    };
+    $scope.pagedItems = pagedItems;
+   	$scope.show_per_page = show_per_page;
+   	$scope.current_page = 0;
+   	$scope.number_of_pages = number_of_pages;
+   	$scope.getNumber = getNumber;
+   	var navigation_html = '<a class="previous_link" ng-click="abc()">Prev </a>';
+	var current_link = 0;
+	
+   	while(number_of_pages > current_link){
+        navigation_html += '<a class="page_link" href="go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
+        current_link++;  
+    }
+    navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';  
+    $('#page_navigation').html(navigation_html);  
+    $('#page_navigation .page_link:first').addClass('active_page');
+
+
+   	$scope.getContributorsList = function() {
+		current_page = $("#current_page").val();
+		console.log(current_page);
+		return contributorsList.slice(current_page*show_per_page, (current_page+1)*show_per_page);   
+	};
+    
+	$scope.gotoPage = function(num){
+		$scope.current_page = num;
+		console.log(num);
+	};
+
+    $scope.prevPage = function () {
+        if ($scope.current_page > 0) {
+            $scope.current_page--;
+        }
+    };
+    
+    $scope.nextPage = function () {
+        if ($scope.current_page < $scope.pagedItems.length - 1) {
+            $scope.current_page++;
+        }
+    };
+
 });
 
 app.controller("accountCtrl", function($scope, $routeParams, $http){

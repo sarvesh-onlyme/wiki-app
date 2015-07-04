@@ -5,7 +5,7 @@
 	<table class="table table-bordered table-hover contributors-list">
 		<tr>
 			<th class="col-id" ng-hide="1">#</th>
-			<th class="col-name">Name</th>
+			<th custom-sort order="'name'" sort="sort" class="col-name">Name</th>
 			<th class="col-username">UserName</th>
 			<th class="col-email">Email</th>
 			<th class="col-organization">Organization</th>
@@ -14,7 +14,7 @@
 			<th class="col-end_date">End Date</th>
 			<th class="col-edit">Edit</th>
 		</tr>
-		<tr ng-repeat="x in data | filter:searchText" name="{{x[0]}}" ng-init="active=0">
+		<tr class="contributor" ng-repeat="x in pagedItems[current_page] | filter:searchText" name="{{x[0]}}" ng-init="active=0" >
 			<td name="id" ng-hide="1">
 				<input class="form-control input-sm" value="{{x[0]}}" ng-show="active" readonly/>
 				<span ng-show="!active">{{ x[0] }}</span>
@@ -62,3 +62,21 @@
 		</tr>
 	</table>
 </div>
+
+<input type='hidden' id='current_page' value="0" />  
+<input type='hidden' id='show_per_page' />
+<ul class="pagination">
+	<li ng-click="prevPage()">
+  		<a href >Prev</a>
+  	</li>
+	<li ng-repeat="i in getNumber(number_of_pages)" ng-click="gotoPage(i-1)" ng-class="{disabled: i-1 == current_page}">
+  		<a href >{{i}}</a>
+  	</li>
+  	<li ng-click="nextPage()">
+  		<a href >Next</a>
+  	</li>
+  	<li>
+  		No/Page
+  			<input type="text" ng-bind="show_per_page" value="{{show_per_page}}" />
+  		
+</ul>
