@@ -78,38 +78,49 @@ app.controller("homeCtrl", function($scope, $routeParams, $http, $filter){
 		});
 	};
 
- 	/* Pagination code */
-    // Slice data to pages
-    pagedItems = [];
-    var show_per_page = 4;
-    var number_of_items = contributorsList.length;
-    var number_of_pages = Math.ceil(number_of_items/show_per_page);
-	for (var i = 0; i < number_of_pages; i++) {
-    	pagedItems[i] = contributorsList.slice(i*show_per_page, (i+1)*show_per_page);
-    };
-    $scope.pagedItems = pagedItems;
-   	$scope.show_per_page = show_per_page;
-   	$scope.current_page = 0;
-   	$scope.number_of_pages = number_of_pages;
-   	$scope.getNumber = getNumber;
-   	var navigation_html = '<a class="previous_link" ng-click="abc()">Prev </a>';
-	var current_link = 0;
+	 /* Pagination code */
+	$scope.init = function() {
+	    // Slice data to pages
+	    
+	    $scope.change_show_per_page(2);
+	    $scope.current_page = 0;
+	   	$scope.getNumber = getNumber;
+	   	$scope.navigation();
+	}
+
+	$scope.navigation = function() {
+	    var number_of_pages = Math.ceil(contributorsList.length/$scope.show_per_page);
+	   	$scope.number_of_pages = number_of_pages;
+	   	var navigation_html = '<a class="previous_link" ng-click="abc()">Prev </a>';
+		var current_link = 0;
+		
+	   	while(number_of_pages > current_link){
+	        navigation_html += '<a class="page_link" href="go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
+	        current_link++;  
+	    }
+	    navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';  
+	    $('#page_navigation').html(navigation_html);  
+	    $('#page_navigation .page_link:first').addClass('active_page');
+	}
 	
-   	while(number_of_pages > current_link){
-        navigation_html += '<a class="page_link" href="go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
-        current_link++;  
-    }
-    navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';  
-    $('#page_navigation').html(navigation_html);  
-    $('#page_navigation .page_link:first').addClass('active_page');
-
-
    	$scope.getContributorsList = function() {
 		current_page = $("#current_page").val();
 		console.log(current_page);
-		return contributorsList.slice(current_page*show_per_page, (current_page+1)*show_per_page);   
+		return contributorsList.slice(current_page*$scope.show_per_page, (current_page+1)*$scope.show_per_page);   
 	};
     
+	$scope.change_show_per_page = function(n) {
+		$scope.show_per_page = n;
+		pagedItems = [];
+		var number_of_items = contributorsList.length;
+	    var number_of_pages = Math.ceil(number_of_items/$scope.show_per_page);
+		for (var i = 0; i < number_of_pages; i++) {
+	    	pagedItems[i] = contributorsList.slice(i*$scope.show_per_page, (i+1)*$scope.show_per_page);
+	    };
+	    $scope.pagedItems = pagedItems;
+	    $scope.navigation();
+	};
+
 	$scope.gotoPage = function(num){
 		$scope.current_page = num;
 		console.log(num);

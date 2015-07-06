@@ -1,4 +1,4 @@
-<div>
+<div ng-init="init()">
 	<div class="input-group search-input">
 		<input type="text" class="form-control" placeholder="Search for..." ng-model="searchText">
 	</div>
@@ -77,6 +77,8 @@
   	</li>
   	<li>
   		No/Page
-  			<input type="text" ng-bind="show_per_page" value="{{show_per_page}}" />
+  			<select id="show_options" ng-model="show_per_page" ng-change="change_show_per_page(show_per_page)" >
+  				<option ng-repeat="entry in [1, 2, 3, 4]" ng-class="">{{entry}}</option>
+  			</select>
   		
 </ul>
