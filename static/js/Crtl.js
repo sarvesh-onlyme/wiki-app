@@ -12,7 +12,6 @@ app.controller("wikiCtrl", function($scope, $http){
 
 app.controller("homeCtrl", function($scope, $routeParams, $http, $filter){
 	$scope.param = $routeParams.param;
-	$scope.data = contributorsList;
 	$scope.organization = companiesList;
 	$scope.country = countriesList;
 	$(".nav.nav-sidebar li").removeClass("active-sidebar");
@@ -137,6 +136,7 @@ app.controller("homeCtrl", function($scope, $routeParams, $http, $filter){
             $scope.current_page++;
         }
     };
+    /* end */
 
 });
 
@@ -194,7 +194,6 @@ app.controller("accountCtrl", function($scope, $routeParams, $http){
 
 app.controller("countryCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
-	$scope.data = countriesList;
 	$(".nav.nav-sidebar li").removeClass("active-sidebar");
 	$('.nav.nav-sidebar a[href="#/country"]')[0].parentElement.className = "active-sidebar";
 
@@ -263,11 +262,73 @@ app.controller("countryCtrl", function($scope, $routeParams, $http){
 			console.log(response);
 		});
 	};
+
+
+	 /* Pagination code */
+	$scope.init = function() {
+	    // Slice data to pages
+	    
+	    $scope.change_show_per_page(50);
+	    $scope.current_page = 0;
+	   	$scope.getNumber = getNumber;
+	   	$scope.navigation();
+	}
+
+	$scope.navigation = function() {
+	    var number_of_pages = Math.ceil(countriesList.length/$scope.show_per_page);
+	   	$scope.number_of_pages = number_of_pages;
+	   	var navigation_html = '<a class="previous_link" ng-click="abc()">Prev </a>';
+		var current_link = 0;
+		
+	   	while(number_of_pages > current_link){
+	        navigation_html += '<a class="page_link" href="go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
+	        current_link++;  
+	    }
+	    navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';  
+	    $('#page_navigation').html(navigation_html);  
+	    $('#page_navigation .page_link:first').addClass('active_page');
+	}
+	
+   	$scope.getContributorsList = function() {
+		current_page = $("#current_page").val();
+		console.log(current_page);
+		return contributorsList.slice(current_page*$scope.show_per_page, (current_page+1)*$scope.show_per_page);   
+	};
+    
+	$scope.change_show_per_page = function(n) {
+		$scope.show_per_page = n;
+		pagedItems = [];
+		var number_of_items = countriesList.length;
+	    var number_of_pages = Math.ceil(number_of_items/$scope.show_per_page);
+		for (var i = 0; i < number_of_pages; i++) {
+	    	pagedItems[i] = countriesList.slice(i*$scope.show_per_page, (i+1)*$scope.show_per_page);
+	    };
+	    $scope.pagedItems = pagedItems;
+	    $scope.navigation();
+	};
+
+	$scope.gotoPage = function(num){
+		$scope.current_page = num;
+		console.log(num);
+	};
+
+    $scope.prevPage = function () {
+        if ($scope.current_page > 0) {
+            $scope.current_page--;
+        }
+    };
+    
+    $scope.nextPage = function () {
+        if ($scope.current_page < $scope.pagedItems.length - 1) {
+            $scope.current_page++;
+        }
+    };
+    /* end */
+
 });
 
 app.controller("companyCtrl", function($scope, $routeParams, $http){
 	$scope.param = $routeParams.param;
-	$scope.data = companiesList;
 	$(".nav.nav-sidebar li").removeClass("active-sidebar");
 	$('.nav.nav-sidebar a[href="#/company"]')[0].parentElement.className = "active-sidebar";
 
@@ -333,6 +394,68 @@ app.controller("companyCtrl", function($scope, $routeParams, $http){
 			console.log(response);
 		});
 	};
+
+		 /* Pagination code */
+	$scope.init = function() {
+	    // Slice data to pages
+	    
+	    $scope.change_show_per_page(10);
+	    $scope.current_page = 0;
+	   	$scope.getNumber = getNumber;
+	   	$scope.navigation();
+	}
+
+	$scope.navigation = function() {
+	    var number_of_pages = Math.ceil(companiesList.length/$scope.show_per_page);
+	   	$scope.number_of_pages = number_of_pages;
+	   	var navigation_html = '<a class="previous_link" ng-click="abc()">Prev </a>';
+		var current_link = 0;
+		
+	   	while(number_of_pages > current_link){
+	        navigation_html += '<a class="page_link" href="go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
+	        current_link++;  
+	    }
+	    navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';  
+	    $('#page_navigation').html(navigation_html);  
+	    $('#page_navigation .page_link:first').addClass('active_page');
+	}
+	
+   	$scope.getContributorsList = function() {
+		current_page = $("#current_page").val();
+		console.log(current_page);
+		return companiesList.slice(current_page*$scope.show_per_page, (current_page+1)*$scope.show_per_page);   
+	};
+    
+	$scope.change_show_per_page = function(n) {
+		$scope.show_per_page = n;
+		pagedItems = [];
+		var number_of_items = companiesList.length;
+	    var number_of_pages = Math.ceil(number_of_items/$scope.show_per_page);
+		for (var i = 0; i < number_of_pages; i++) {
+	    	pagedItems[i] = companiesList.slice(i*$scope.show_per_page, (i+1)*$scope.show_per_page);
+	    };
+	    $scope.pagedItems = pagedItems;
+	    $scope.navigation();
+	};
+
+	$scope.gotoPage = function(num){
+		$scope.current_page = num;
+		console.log(num);
+	};
+
+    $scope.prevPage = function () {
+        if ($scope.current_page > 0) {
+            $scope.current_page--;
+        }
+    };
+    
+    $scope.nextPage = function () {
+        if ($scope.current_page < $scope.pagedItems.length - 1) {
+            $scope.current_page++;
+        }
+    };
+    /* end */
+
 });
 
 app.controller("signinCtrl", function($scope, $routeParams, $http){

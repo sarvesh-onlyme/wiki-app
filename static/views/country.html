@@ -1,4 +1,4 @@
-<div>
+<div ng-init="init()">
 	<div class="input-group search-input">
 		<input type="text" class="form-control" placeholder="Search for..." ng-model="searchText">
 	</div>
@@ -24,7 +24,7 @@
 			<th class="col-country">Country</th>
 			<th class="col-edit">Edit</th>
 		</tr>
-		<tr ng-repeat="x in data | filter:searchText" name="{{x[0]}}" ng-init="active=0">
+		<tr ng-repeat="x in pagedItems[current_page] | filter:searchText" name="{{x[0]}}" ng-init="active=0">
 			<td name="id">
 				<input class="form-control input-sm" value="{{x[0]}}" ng-show="active" readonly/>
 				<span ng-show="!active">{{ x[0] }}</span>
@@ -43,4 +43,24 @@
 			</td>
 		</tr>
 	</table>
+</div>
+
+<div class="row">
+	<ul class="pagination col-md-8">
+		<li ng-click="prevPage()">
+  			<a href >Prev</a>
+	  	</li>
+		<li ng-repeat="i in getNumber(number_of_pages)" ng-click="gotoPage(i-1)" ng-class="{disabled: i-1 == current_page}">
+	  		<a href >{{i}}</a>
+  		</li>
+  		<li ng-click="nextPage()">
+  			<a href >Next</a>
+  		</li>
+	</ul>
+	<div class="col-md-2">
+  		Show per page
+  		<select id="show_options" ng-model="show_per_page" ng-change="change_show_per_page(show_per_page)" >
+  			<option ng-repeat="entry in [10, 20, 50, 100]" ng-class="">{{entry}}</option>
+  		</select>
+	</div>
 </div>
